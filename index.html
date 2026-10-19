@@ -10,14 +10,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* Palette from hobbies: piano ivory + ebony, guitar/brass amber, ballroom crimson, archery forest, hiking sky, gaming cyan */
-:root{--bg:#ece6d6;--ink:#17211c;--mute:#55605a;--line:rgba(23,33,28,.16);--card:rgba(250,246,236,.66);--accent:#8c5a12;--crimson:#9b2335;--forest:#2f5a3f;--sky:#3f7fa6;--cyan:#0f9d8c;
+:root{--bg:#ece6d6;--ink:#17211c;--mute:#3f4944;--line:rgba(23,33,28,.16);--card:rgba(250,246,236,.82);--accent:#8c5a12;--crimson:#9b2335;--forest:#2f5a3f;--sky:#3f7fa6;--cyan:#0f9d8c;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b130f;--ink:#efe9db;--mute:#9fa89f;--line:rgba(239,233,219,.15);--card:rgba(17,28,22,.58);--accent:#d6a24c;--crimson:#c8374d;--forest:#5a9a6c;--sky:#6fb0d6;--cyan:#4fe3d0;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0b130f;--ink:#efe9db;--mute:#9fa89f;--line:rgba(239,233,219,.15);--card:rgba(17,28,22,.58);--accent:#d6a24c;--crimson:#c8374d;--forest:#5a9a6c;--sky:#6fb0d6;--cyan:#4fe3d0;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b130f;--ink:#efe9db;--mute:#bcc4bb;--line:rgba(239,233,219,.15);--card:rgba(17,28,22,.78);--accent:#d6a24c;--crimson:#c8374d;--forest:#5a9a6c;--sky:#6fb0d6;--cyan:#4fe3d0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b130f;--ink:#efe9db;--mute:#bcc4bb;--line:rgba(239,233,219,.15);--card:rgba(17,28,22,.78);--accent:#d6a24c;--crimson:#c8374d;--forest:#5a9a6c;--sky:#6fb0d6;--cyan:#4fe3d0;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 Manrope,system-ui,sans-serif;overflow-x:hidden}
 #stage{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.scrim{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 82%,transparent) 42%,color-mix(in srgb,var(--bg) 12%,transparent) 100%)}
+@media (max-width:900px){.scrim{background:color-mix(in srgb,var(--bg) 74%,transparent)}}
+h1,h2,.lede,.name,.tl p,.tl small,.paper span,.edu div{text-shadow:0 0 20px var(--bg),0 0 8px var(--bg)}
 main,header,footer{position:relative;z-index:1}
 nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,5vw,56px);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:linear-gradient(var(--bg),transparent)}
 nav b{font:400 24px 'Instrument Serif',Georgia,serif}
@@ -95,6 +98,7 @@ body.lock{overflow:hidden}
 </head>
 <body>
 <canvas id="stage" aria-hidden="true"></canvas>
+<div class="scrim" aria-hidden="true"></div>
 <nav aria-label="Primary"><b>Luke Borchjes</b><div><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#research">Research</a><a href="#beyond">Beyond code</a><a href="#contact">Contact</a></div></nav>
 
 <header>
@@ -162,8 +166,7 @@ body.lock{overflow:hidden}
 
 <section id="contact" class="contact">
   <h2 class="r">Let’s work together.</h2>
-  <p class="r"><a class="mail" href="mailto:ldborchjes@gmail.com">ldborchjes@gmail.com</a></p>
-  <div class="links r"><a href="https://arxiv.org/abs/2308.04909">SATNAC 2023 paper</a><a href="https://arxiv.org/abs/2209.01490">SATNAC 2022 paper</a><span style="color:var(--mute)">Loumar, Western Cape, South Africa</span></div>
+  <div class="links r"><a href="https://arxiv.org/abs/2308.04909">SATNAC 2023 paper</a><a href="https://arxiv.org/abs/2209.01490">SATNAC 2022 paper</a><span style="color:var(--mute)">Western Cape, South Africa</span></div>
 </section>
 </main>
 <footer>© 2026 Luke Borchjes. English and Afrikaans.</footer>
@@ -221,7 +224,7 @@ var G=new THREE.Group();S.add(G);
 G.add(new THREE.Mesh(new THREE.TorusKnotGeometry(2,.55,160,18,2,3),mat));
 var core=new THREE.Mesh(new THREE.IcosahedronGeometry(.9,1),new THREE.MeshBasicMaterial({color:pal[0],wireframe:true,transparent:true,opacity:.7}));G.add(core);
 // archery target: concentric rings around the knot
-var rings=[];[3.4,3.9,4.4].forEach(function(r,i){var m=new THREE.Mesh(new THREE.TorusGeometry(r,.012,8,120),new THREE.MeshBasicMaterial({color:pal[0],transparent:true,opacity:.35}));m.rotation.x=1.1+i*.15;G.add(m);rings.push(m)});
+var rings=[];[3.4,3.9,4.4].forEach(function(r,i){var m=new THREE.Mesh(new THREE.TorusGeometry(r,.012,8,120),new THREE.MeshBasicMaterial({color:pal[0],transparent:true,opacity:.25}));m.rotation.x=1.1+i*.15;G.add(m);rings.push(m)});
 var n=900,pos=new Float32Array(n*3);for(var i=0;i<n*3;i++)pos[i]=(Math.random()-.5)*40;
 var pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
 var pm=new THREE.PointsMaterial({color:pal[0],size:.04,transparent:true,opacity:.7});
@@ -237,9 +240,9 @@ function frame(t){
   var seg=sp*(pal.length-1),k=Math.min(Math.floor(seg),pal.length-2);
   tc.copy(pal[k]).lerp(pal[k+1],seg-k);col.lerp(tc,.1);
   mat.color.copy(col);core.material.color.copy(col);pm.color.copy(col);rings.forEach(function(m){m.material.color.copy(col);m.rotation.z+=dt*.15});
-  var o=isDark()?1:.75;mat.opacity=.5*o;pm.opacity=.7*o;
+  var o=isDark()?1:.75;mat.opacity=.42*o;pm.opacity=.55*o;
   G.rotation.y=sp*Math.PI*4+mx*.6;G.rotation.x=sp*Math.PI*1.5+my*.4;
-  G.position.x=Math.sin(sp*Math.PI*3)*(innerWidth>700?3.6:0);
+  G.position.x=innerWidth>900?3.6+Math.sin(sp*Math.PI*3)*1.4:0;
   G.position.y=Math.cos(sp*Math.PI*2)*.8;
   var s=1+Math.sin(sp*Math.PI)*.35;G.scale.setScalar(innerWidth>700?s:s*.7);
   core.rotation.z+=dt*.8;C.position.z=9-sp*3;P.rotation.y=sp*1.2+t*.00003;P.rotation.x=sp*.5;
